@@ -67,7 +67,6 @@ Requires(postun): java-gcj-compat
 BuildRequires:  java-gcj-compat-devel
 %else
 BuildRequires:  java-devel >= 0:1.4.2
-BuildArch:      noarch
 %endif
 
 %description -n pokersource
@@ -202,6 +201,7 @@ fi
 %{_includedir}/%{name}/handval.h
 %{_includedir}/%{name}/handval_low.h
 %multiarch %{_includedir}/%{name}/poker_config.h
+%{multiarch_includedir}/*
 %{_includedir}/%{name}/poker_defs.h
 %{_includedir}/%{name}/poker_wrapper.h
 %{_includedir}/%{name}/pokereval_export.h
