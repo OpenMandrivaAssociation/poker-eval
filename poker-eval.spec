@@ -1,4 +1,4 @@
-%bcond_without          java
+%bcond_with             java
 
 %if %with java
 %define gcj_support     1
@@ -9,14 +9,14 @@
 %define lib_name        %{lib_name_orig}%{lib_major}
 
 Name:           poker-eval
-Version:        133.0
+Version:        134.0
 Release:        %mkrel 1
 Epoch:          0
 Summary:        Poker hand evaluator library
 Group:          System/Libraries
 License:        GPL
 URL:            http://pokersource.org/poker-eval/
-Source0:        http://download.gna.org/pokersource/sources/%{name}-%{version}.tar.bz2
+Source0:        http://download.gna.org/pokersource/sources/poker-eval-%{version}.tar.gz
 Source1:        %{name}-java.tar.bz2
 Source2:        %{name}.Makefile-java
 Source3:        %{name}-saie.script
@@ -142,11 +142,11 @@ popd
 %endif
 
 %check
-%make check
+%{make} check
 
 %if %with java
 pushd java
-%make test develtest
+%{make} test develtest
 popd
 %endif
 
@@ -184,8 +184,44 @@ fi
 %files -n %{lib_name}-devel
 %defattr(-,root,root,-)
 %doc tmp/examples
-%multiarch %{multiarch_includedir}/*
-%{_includedir}/%{name}
+%dir %{_includedir}/%{name}
+%{_includedir}/%{name}/combinations.h
+%{_includedir}/%{name}/deck.h
+%{_includedir}/%{name}/deck_astud.h
+%{_includedir}/%{name}/deck_joker.h
+%{_includedir}/%{name}/deck_std.h
+%{_includedir}/%{name}/deck_undef.h
+%{_includedir}/%{name}/enumdefs.h
+%{_includedir}/%{name}/enumerate.h
+%{_includedir}/%{name}/enumord.h
+%{_includedir}/%{name}/evx_defs.h
+%{_includedir}/%{name}/game_astud.h
+%{_includedir}/%{name}/game_joker.h
+%{_includedir}/%{name}/game_std.h
+%{_includedir}/%{name}/handval.h
+%{_includedir}/%{name}/handval_low.h
+%multiarch %{_includedir}/%{name}/poker_config.h
+%{_includedir}/%{name}/poker_defs.h
+%{_includedir}/%{name}/poker_wrapper.h
+%{_includedir}/%{name}/pokereval_export.h
+%{_includedir}/%{name}/rules_astud.h
+%{_includedir}/%{name}/rules_joker.h
+%{_includedir}/%{name}/rules_std.h
+%{_includedir}/%{name}/rules_undef.h
+%{_includedir}/%{name}/inlines/eval.h
+%{_includedir}/%{name}/inlines/eval_astud.h
+%{_includedir}/%{name}/inlines/eval_joker.h
+%{_includedir}/%{name}/inlines/eval_joker_low.h
+%{_includedir}/%{name}/inlines/eval_joker_low8.h
+%{_includedir}/%{name}/inlines/eval_low.h
+%{_includedir}/%{name}/inlines/eval_low27.h
+%{_includedir}/%{name}/inlines/eval_low8.h
+%{_includedir}/%{name}/inlines/eval_omaha.h
+%{_includedir}/%{name}/inlines/eval_type.h
+%{_includedir}/%{name}/inlines/evx5.h
+%{_includedir}/%{name}/inlines/evx7.h
+%{_includedir}/%{name}/inlines/evx_action.h
+%{_includedir}/%{name}/inlines/evx_inlines.h
 %{_libdir}/libpoker-eval*.so
 %{_libdir}/pkgconfig/%{name}.pc
 
