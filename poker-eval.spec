@@ -1,4 +1,4 @@
-%bcond_with             java
+%bcond_without          java
 
 %if %with java
 %define gcj_support     1
@@ -10,7 +10,7 @@
 
 Name:           poker-eval
 Version:        134.0
-Release:        %mkrel 1
+Release:        %mkrel 2
 Epoch:          0
 Summary:        Poker hand evaluator library
 Group:          System/Libraries
@@ -106,6 +106,7 @@ popd
 %make
 %if %with java
 pushd java
+export CLASSPATH=.
 %{make} CC=%{__cc} CFLAGS="-fPIC %{optflags}" JDKHOME=%{java_home}
 popd
 %endif
