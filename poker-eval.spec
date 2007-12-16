@@ -10,7 +10,7 @@
 
 Name:           poker-eval
 Version:        134.0
-Release:        %mkrel 3
+Release:        %mkrel 4
 Epoch:          0
 Summary:        Poker hand evaluator library
 Group:          System/Libraries
@@ -58,7 +58,7 @@ Group:          Development/Java
 Provides:       %{lib_name_orig}-java = %{epoch}:%{version}-%{release}
 Provides:       %{name}-java = %{epoch}:%{version}-%{release}
 BuildRequires:  gnu.getopt
-BuildRequires:  jpackage-utils
+BuildRequires:  java-rpmbuild
 BuildRequires:  junit
 BuildRequires:  oro
 %if %{gcj_support}
