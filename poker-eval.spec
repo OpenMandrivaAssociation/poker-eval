@@ -23,7 +23,6 @@ Source3:        %{name}-saie.script
 Patch0:         %{name}-java-junit.patch
 Patch1:         %{name}-java-load-library.patch
 BuildRequires:  valgrind
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 This package is a free (GPL) toolkit for writing programs which
