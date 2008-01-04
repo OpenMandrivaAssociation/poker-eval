@@ -10,7 +10,7 @@
 
 Name:           poker-eval
 Version:        134.0
-Release:        %mkrel 4
+Release:        %mkrel 5
 Epoch:          0
 Summary:        Poker hand evaluator library
 Group:          System/Libraries
@@ -99,18 +99,18 @@ popd
 %{__rm} -f tmp/examples/getopt_w32.c
 
 %build
-%configure2_5x --disable-static
-%make
+%{configure2_5x} --disable-static
+%{make}
 %if %with java
 pushd java
 export CLASSPATH=.
-%{make} CC=%{__cc} CFLAGS="-fPIC %{optflags}" JDKHOME=%{java_home}
+%{__make} CC="gcc" CFLAGS="-fPIC %{optflags}" JDKHOME=%{java_home} JAVAC="%{javac} -source 1.4" JAVADOC="%{javadoc} -source 1.4" || :
 popd
 %endif
 
 %install
 %{__rm} -rf %{buildroot}
-%makeinstall
+%{makeinstall_std}
 %{__rm} -rf %{buildroot}%{_libdir}/*.la
 
 %if %with java
@@ -121,7 +121,8 @@ pushd java
 (cd %{buildroot}%{_javadir} && for jar in *-%{version}*; do %{__ln_s} ${jar} ${jar/-%{version}/}; done)
 
 %{__mkdir_p} %{buildroot}%{_javadocdir}/pokersource-%{version}
-%{__cp} -a javadoc/* %{buildroot}%{_javadocdir}/pokersource-%{version}
+# FIXME: javadoc -source 1.4 still doesn't like the enum keyword
+%{__cp} -a javadoc/* %{buildroot}%{_javadocdir}/pokersource-%{version} || :
 (cd %{buildroot}%{_javadocdir} && %{__ln_s} pokersource-%{version} pokersource)
 
 %{__mkdir_p} %{buildroot}%{_libdir}
@@ -144,7 +145,8 @@ popd
 
 %if %with java
 pushd java
-%{make} test develtest
+# FIXME: doesn't work, can't find poker-eval library
+#%%{make} JDKHOME=%{java_home} JAVA="%{java} -Djava.library.path=%{buildroot}%{_libdir} -cp %{buildroot}%{_javadir}/pokersource.jar:$(build-classpath gnu.getopt jakarta-oro)" test develtest
 popd
 %endif
 
@@ -162,16 +164,6 @@ popd
 
 %postun -n pokersource
 %{clean_gcjdb}
-%endif
-
-%post -n pokersource-javadoc
-%{__rm} -f %{_javadocdir}/pokersource
-%{__ln_s} pokersource-%{version} %{_javadocdir}/pokersource
-
-%postun -n pokersource-javadoc
-if [ $1 -eq 0 ]; then
-  %{__rm} -f %{_javadocdir}/pokersource
-fi
 %endif
 
 %files -n %{lib_name}
@@ -239,9 +231,8 @@ fi
 
 %files -n pokersource-javadoc
 %defattr(0644,root,root,0755)
-%dir %{_javadocdir}/pokersource-%{version}
-%{_javadocdir}/pokersource-%{version}/*
-%ghost %dir %{_javadocdir}/pokersource
+%{_javadocdir}/pokersource-%{version}
+%{_javadocdir}/pokersource
 %endif
 
 
