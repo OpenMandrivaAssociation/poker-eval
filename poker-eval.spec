@@ -165,6 +165,7 @@ popd
 %postun -n pokersource
 %{clean_gcjdb}
 %endif
+%endif
 
 %files -n %{lib_name}
 %defattr(-,root,root,-)
