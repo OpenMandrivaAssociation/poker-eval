@@ -10,7 +10,7 @@
 
 Name:           poker-eval
 Version:        134.0
-Release:        %mkrel 5
+Release:        %mkrel 7
 Epoch:          0
 Summary:        Poker hand evaluator library
 Group:          System/Libraries
