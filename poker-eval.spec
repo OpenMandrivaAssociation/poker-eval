@@ -5,12 +5,12 @@
 %endif
 
 %define lib_major       1
-%define lib_name_orig   %mklibname %{name}
-%define lib_name        %{lib_name_orig}%{lib_major}
+%define lib_name        %{mklibname %name %lib_major}
+%define develname	%{mklibname -d %name}
 
 Name:           poker-eval
-Version:        134.0
-Release:        %mkrel 8
+Version:        135.0
+Release:        %mkrel 1
 Epoch:          0
 Summary:        Poker hand evaluator library
 Group:          System/Libraries
@@ -32,22 +32,21 @@ simulate or analyze poker games.
 %package -n %{lib_name}
 Summary:        Main library for %{name}
 Group:          System/Libraries
-Provides:       %{lib_name_orig} = %{epoch}:%{version}-%{release}
 Provides:       %{name} = %{epoch}:%{version}-%{release}
 
 %description -n %{lib_name}
 This package is a free (GPL) toolkit for writing programs which
 simulate or analyze poker games.
 
-%package -n %{lib_name}-devel
+%package -n %{develname}
 Summary: Poker hand evaluator library development files
 Group: System/Libraries
 Requires:       %{lib_name} = %{epoch}:%{version}-%{release}
-Provides:       %{lib_name_orig}-devel = %{epoch}:%{version}-%{release}
 Provides:       %{name}-devel = %{epoch}:%{version}-%{release}
 Provides:       lib%{name}-devel = %{epoch}:%{version}-%{release}
+Obsoletes:	%{_lib}poker-eval1-devel
 
-%description -n %{lib_name}-devel
+%description -n %{develname}
 This package contains the library needed to run programs dynamically
 linked with %{name}.
 
@@ -55,7 +54,7 @@ linked with %{name}.
 %package -n pokersource
 Summary:        Java library for %{name}
 Group:          Development/Java
-Provides:       %{lib_name_orig}-java = %{epoch}:%{version}-%{release}
+Provides:       %{_lib}%{name}-java = %{epoch}:%{version}-%{release}
 Provides:       %{name}-java = %{epoch}:%{version}-%{release}
 BuildRequires:  gnu.getopt
 BuildRequires:  java-rpmbuild
@@ -176,7 +175,7 @@ popd
 %doc AUTHORS ChangeLog COPYING NEWS README TODO WHATS-HERE
 %{_libdir}/libpoker-eval*.so.*
 
-%files -n %{lib_name}-devel
+%files -n %{develname}
 %defattr(-,root,root,-)
 %doc tmp/examples
 %dir %{_includedir}/%{name}
