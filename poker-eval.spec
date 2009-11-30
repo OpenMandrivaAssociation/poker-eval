@@ -9,12 +9,12 @@
 %define develname	%{mklibname -d %name}
 
 Name:           poker-eval
-Version:        135.0
-Release:        %mkrel 2
+Version:        136.0
+Release:        %mkrel 1
 Epoch:          0
 Summary:        Poker hand evaluator library
 Group:          System/Libraries
-License:        GPL
+License:        GPLv3+
 URL:            http://pokersource.org/poker-eval/
 Source0:        http://download.gna.org/pokersource/sources/poker-eval-%{version}.tar.gz
 Source1:        %{name}-java.tar.bz2
@@ -22,6 +22,8 @@ Source2:        %{name}.Makefile-java
 Source3:        %{name}-saie.script
 Patch0:         %{name}-java-junit.patch
 Patch1:         %{name}-java-load-library.patch
+# Patch from Gentoo (11/2009)
+Patch2:		poker-eval-136.0-bash40.patch
 BuildRequires:  valgrind
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -84,6 +86,7 @@ Javadoc for pokersource-javadoc.
 %setup -q -a 1
 %patch0 -p1
 %patch1 -p1
+%patch2 -p0
 %{__cp} -a %{SOURCE2} java/Makefile
 %{__mkdir_p} java/lib
 pushd java/lib
@@ -98,6 +101,14 @@ popd
 %{__rm} -f tmp/examples/getopt_w32.c
 
 %build
+
+# 11/2009 incubusss : -DPIC -fPIC not added with configure, set it here (x86_64 only)
+%ifarch x86_64
+CPPFLAGS="${CPPFLAGS:-%optflags -DPIC -fPIC}" ; export CPPFLAGS ;
+CXXFLAGS="${CXXFLAGS:-%optflags -DPIC -fPIC}" ; export CXXFLAGS ;
+CFLAGS="${CFLAGS:-%optflags -DPIC -fPIC}" ; export CFLAGS ;
+%endif
+
 %{configure2_5x} --disable-static
 %{make}
 %if %with java
