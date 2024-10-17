@@ -15,7 +15,7 @@ Epoch:          0
 Summary:        Poker hand evaluator library
 Group:          System/Libraries
 License:        GPLv3+
-URL:            http://pokersource.org/poker-eval/
+URL:            https://pokersource.org/poker-eval/
 Source0:        http://download.gna.org/pokersource/sources/poker-eval-%{version}.tar.gz
 Source1:        %{name}-java.tar.bz2
 Source2:        %{name}.Makefile-java
